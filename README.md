@@ -41,5 +41,11 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin
 sudo install minikube-darwin-amd64 /usr/local/bin/minikube
 ```
 
-3. minikube start --driver=hyperkit
+3. `minikube start --driver=hyperkit`
+4. Enable Docker Environment: Run the following command to set up the Docker environment variables for the Minikube VM: `eval $(minikube docker-env)`
+5. Access Docker Commands: `docker ps`
+6. Access Docker inside VM Hyperlink with ssh (Optional):
+    `minikube ip`
 
+    `ssh docker@<minikube-ip>`
+7. Exit Docker Environment: `eval $(minikube docker-env -u)`
