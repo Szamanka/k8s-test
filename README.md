@@ -73,3 +73,23 @@ _`docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"`_
 4. Rebuild image and re-deploy:
     `docker build -t simple-flask-app .`
     `kubectl apply -f minikube/deploy/k8s.yaml`
+
+```
+kubectl delete -f minikube/deploy/k8s.yaml;docker rmi simple-flask-app;docker build -t simple-flask-app .;kubectl apply -f minikube/deploy/k8s.yaml
+```
+#### Extra troubleshooting:
+- If working with VPN, or vm hyperkit not connection to internet:
+1. `minikube stop` and disconnect from VPN
+2. `export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.59.0/24,192.168.39.0/24,$(minikube ip)`
+3. listen adress from dockerhost
+    `minikube start --listen-address=192.168.64.3 --driver=hyperkit --memory 4000 --cpus 2 container-runtime=docker`
+
+
+_`kubectl get nodes`_
+
+#### upload docker image to registry before deployment
+
+1. Build image.
+2. `docker tag simple-flask-app localhost:5000/simple-flask-app:latest`
+3. `docker push localhost:5000/simple-flask-app:latest`
+4. change deployment specs `image: localhost:5000/simple-flask-app:latest`

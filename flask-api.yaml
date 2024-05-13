@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flask-api
+spec:
+  containers:
+    - name: flask-api
+      image: flask-api:latest
+      imagePullPolicy: Never
+      resources:
+        limits:
+          memory: "200Mi"
+
+# Path: flask-api-service.yaml
+# eval $(minikube docker-env)
+# docker build -t flask-api .   
+# kubectl create -f flask-api.yaml       
