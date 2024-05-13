@@ -180,3 +180,9 @@ kubectl apply -f minikube/deploy/sw-deployment.yaml
 ```
 
 12. `minikube service sw-service --url`
+
+13. Finish lab:
+- Delete all pods from the deployment
+`kubectl delete deployment star-wars-deployment` 
+
+- `minikube stop`
