@@ -48,4 +48,28 @@ sudo install minikube-darwin-amd64 /usr/local/bin/minikube
     `minikube ip`
 
     `ssh docker@<minikube-ip>`
-7. Exit Docker Environment: `eval $(minikube docker-env -u)`
+
+_Exit Docker Environment: `eval $(minikube docker-env -u)`_
+
+_`docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"`_
+
+8. Build docker image from your app inside minikube: `docker build -t simple-flask-app .`
+9. Apply k8s deployment: `kubectl apply -f minikube/deploy/k8s.yaml`
+10. Expose the service: `kubectl expose deployment simple-flask-app --type=NodePort --port=5000`
+11. check: 
+    `minikube service list` 
+    `kubectl get svc`
+    `kubectl get pods`
+12. logs: `kubectl logs <podname>`
+
+
+#### iterative development (redeploy after code change)
+
+1. make change in app.py
+2. ensure you're pointing to minikube's Docker using: `minikube docker-env`
+3. Delete deployment and image:
+    `kubectl delete -f minikube/deploy/k8s.yaml`
+    `docker rmi simple-flask-app`
+4. Rebuild image and re-deploy:
+    `docker build -t simple-flask-app .`
+    `kubectl apply -f minikube/deploy/k8s.yaml`
