@@ -93,3 +93,90 @@ _`kubectl get nodes`_
 2. `docker tag simple-flask-app localhost:5000/simple-flask-app:latest`
 3. `docker push localhost:5000/simple-flask-app:latest`
 4. change deployment specs `image: localhost:5000/simple-flask-app:latest`
+
+# Node App simple
+
+1. In your terminal, folder project run:
+```js
+npm init -y # Generate package.json
+npm i express # Install express
+touch index.js # Create a new index.js file
+```
+
+2. for this app example run:
+```js
+npm i unique-names-generator
+```
+
+3. in `package.json` add:
+```js
+"scripts": {
+    "start": "node index.js"
+ }
+ ```
+
+ 4. Create Dockerfile
+ 5. `minikube start`
+ 6. Create Image inside Minikube:
+```js
+
+ eval $(minikube docker-env)
+docker build -t starwars-node .
+```
+```js
+# Additionally you can check to see if starwars-node Docker image is in minikube by
+
+minikube ssh
+
+docker@minikube:~$ docker images
+# You should see starward-node docker image
+```
+
+7. Create K8s Deployment:
+
+`kubectl apply -f minikube/deploy/sw-deployment.yaml`
+
+8. Check creation of pod/s
+`kubectl get pod`
+`kubectl describe pod <podname>`
+if any shows **ErrImagePull** or **ImagePullBackOff** add this to sw-deployment:
+```js
+ports:
+  - containerPort: 3000
+imagePullPolicy: Never # Image should not be pulled
+```
+
+9. Re-Deploy:
+```js
+kubectl get deployment
+# You'll see star-wars-deployment 
+kubectl delete deployment star-wars-deployment
+# deployment.apps "star-wars-deployment" deleted
+kubectl get deployment
+# You should not see star-wars-deployment
+kubectl apply -f minikube/deploy/sw-deployment.yaml
+# deployment.apps/star-wars-deployment created
+kubectl get pod
+# You should see two pods in "Running" STATUS
+```
+
+10. Add Service to expose the node app to external ip:
+
+```js
+kubectl apply -f minikube/deploy/sw-service.yaml
+# service/sw-service created
+kubectl get service
+# Observe that sw-service created
+minikube service sw-service --url
+# http://<external_service_ip>:31000
+```
+
+11. add _ConfigMap_ and _env_ section in deployment, ConfigMap can be used to handle ENVs related to a container:
+
+
+```js
+kubectl apply -f minikube/deploy/envs.yaml
+kubectl apply -f minikube/deploy/sw-deployment.yaml
+```
+
+12. `minikube service sw-service --url`

@@ -1,11 +1,6 @@
-# Dockerfile
-FROM python:3.9-slim
-
-#Sets the working directory inside the container to /app.
+FROM node:12-alpine
 WORKDIR /app
-
-COPY . /app
-RUN pip install -r requirements.txt
-
-ENTRYPOINT [ "python" ]
-CMD ["app.py"]
+COPY package*.json ./
+RUN npm i
+COPY index.js index.js
+CMD ["npm", "start"]
