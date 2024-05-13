@@ -20,13 +20,15 @@ exploring Kubernetes local development
 
 1. Shows keys being evaluated by agent:
     `ssh-add -l`   
-2- Shows all existent ssh keys:
+2. Shows all existent ssh keys:
     `ls -al ~/.ssh`
 3. Shows me the fingerprint of selected ssh key:
-`ssh-keygen -l -f /Users/virginiahamra/.ssh/id_szam`
+
+    `ssh-keygen -l -f /Users/virginiahamra/.ssh/id_szam`
 4. Add the key to the agent that is evaluating it:
 
    `eval "$(ssh-agent -s)"`
+
    `ssh-add --apple-use-keychain ~/.ssh/id_szam`
 
 
